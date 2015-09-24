@@ -6,4 +6,11 @@
     <string name="edit_user_name">User Name</string>
     <string name="edit_password">Password</string>
     <string name="button_login">Login</string>
+    <string name="title_activity_add_building_manager">AddBuildingManager</string>
+    <string name="text_manager_name">Name</string>
+    <string name="button_getting_started">Getting Started</string>
+    <string name="title_activity_display_menu">DisplayMenu</string>
+    <string name="button_buildings">Buildings</string>
+    <string name="button_managers">Managers</string>
+    <string name="button_exit">Exit</string>
 </resources>

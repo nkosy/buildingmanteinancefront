@@ -1,0 +1,55 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:weightSum="1"
+        tools:context="com.nkosi.buildingmanteinancefront.views.DisplayMenu">
+
+            <ImageView android:src="@drawable/menu"
+                android:layout_width="893dp"
+                android:layout_height="134dp"
+                android:layout_marginBottom="24dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.47" />
+            <Button android:id="@+id/btnGettingStarted"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="10dip"
+                android:text="@string/button_getting_started"
+                android:padding="10dip"/>
+            <Button android:id="@+id/btnBuildings"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="10dip"
+                android:text="@string/button_buildings"
+                android:padding="10dip"/>
+            <Button android:id="@+id/btnManagers"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="10dip"
+                android:text="@string/button_managers"
+                android:padding="10dip"/>
+            <Button android:id="@+id/bntExit"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="10dip"
+                android:text="@string/button_exit"
+                android:padding="10dip"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Button"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.47" />
+    </LinearLayout>
+</ScrollView>
