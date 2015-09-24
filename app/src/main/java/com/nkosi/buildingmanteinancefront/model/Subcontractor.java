@@ -3,23 +3,16 @@ package com.nkosi.buildingmanteinancefront.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.*;
-
 /*@author       Nkosy
  *@Date         23/042015
  *@Description  A company contacted to do mantainance jobs
  */
-@Entity
+
 public class Subcontractor implements Serializable{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long subcontractor_id;
-    @Embedded
     private SubcontractorManager subcontractorManager;
     private String subcontractor_name;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="subcontractor_id")
     private List<Job> jobs;
 
     private Subcontractor() {

@@ -4,19 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 /**
  * @author Nkosy Description e.g door, window, blinds, table etc Date 23/04/2015
  */
-@Entity
+
 public class Item implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long item_id;
     private String item_name;
     private double cost;
@@ -94,27 +87,29 @@ public class Item implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 23 * hash + (int) (this.item_id ^ (this.item_id >>> 32));
-        hash = 23 * hash + Objects.hashCode(this.item_name);
-        hash = 23 * hash + (int) (Double.doubleToLongBits(this.cost) ^ (Double.doubleToLongBits(this.cost) >>> 32));
-        hash = 23 * hash + Objects.hashCode(this.last_mantained);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (item_id != item.item_id) return false;
+        if (Double.compare(item.cost, cost) != 0) return false;
+        if (item_name != null ? !item_name.equals(item.item_name) : item.item_name != null)
+            return false;
+        return !(last_mantained != null ? !last_mantained.equals(item.last_mantained) : item.last_mantained != null);
+
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Item other = (Item) obj;
-        return true;
+    public int hashCode() {
+        int result;
+        long temp;
+        result = (int) (item_id ^ (item_id >>> 32));
+        result = 31 * result + (item_name != null ? item_name.hashCode() : 0);
+        temp = Double.doubleToLongBits(cost);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (last_mantained != null ? last_mantained.hashCode() : 0);
+        return result;
     }
-
-    
-   
 }

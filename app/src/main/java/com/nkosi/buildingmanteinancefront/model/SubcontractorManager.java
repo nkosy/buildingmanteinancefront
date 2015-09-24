@@ -4,7 +4,6 @@ package com.nkosi.buildingmanteinancefront.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.*;
 
 /**
  *
@@ -12,7 +11,7 @@ import javax.persistence.*;
  * Description  The manager responsible for the company contracted to do the jib
  * Date         23/04/2015
  */
-@Embeddable
+
 public class SubcontractorManager implements Serializable {
 
     private String subcontractorManager_name;
@@ -56,28 +55,5 @@ public class SubcontractorManager implements Serializable {
     public String getSubcontractorManager_name() {
         return subcontractorManager_name;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-
-        hash = 97 * hash + Objects.hashCode(this.subcontractorManager_name);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final SubcontractorManager other = (SubcontractorManager) obj;
-        return true;
-    }
-    
-    
-    
     
 }

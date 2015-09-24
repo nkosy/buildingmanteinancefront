@@ -2,28 +2,16 @@ package com.nkosi.buildingmanteinancefront.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 
 /**
  * @author Nkosy Description office space occupied by a tenant Date 23/04/2015
  */
-@Entity
+
 public class OfficeSpace implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long officeSpace_id;
     private int officeSpace_no;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "officeSpace_id")
     private List<Facility> facilities;
 
     private OfficeSpace() {
@@ -85,24 +73,23 @@ public class OfficeSpace implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + (int) (this.officeSpace_id ^ (this.officeSpace_id >>> 32));
-        hash = 59 * hash + this.officeSpace_no;
-        hash = 59 * hash + Objects.hashCode(this.facilities);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OfficeSpace that = (OfficeSpace) o;
+
+        if (officeSpace_id != that.officeSpace_id) return false;
+        if (officeSpace_no != that.officeSpace_no) return false;
+        return !(facilities != null ? !facilities.equals(that.facilities) : that.facilities != null);
+
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final OfficeSpace other = (OfficeSpace) obj;
-        return true;
+    public int hashCode() {
+        int result = (int) (officeSpace_id ^ (officeSpace_id >>> 32));
+        result = 31 * result + officeSpace_no;
+        result = 31 * result + (facilities != null ? facilities.hashCode() : 0);
+        return result;
     }
-
 }
