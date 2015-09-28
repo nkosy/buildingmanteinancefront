@@ -63,16 +63,18 @@ public class RegisterActivity extends AppCompatActivity {
         String userName = editUserName.getText().toString();
 
 
-        /*if (firstName == "" || lastName == "" || email == "" || password == "" || userName == ""){
-            Context context = getApplicationContext();
+        if (firstName == "" || lastName == "" || email == "" || password == "" || userName == ""){
+
+            Toast.makeText(this, "You did not enter a username", Toast.LENGTH_SHORT).show();
+            /*Context context = getApplicationContext();
             CharSequence text = "Please Complete All fields";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            toast.show();*/
         }
         else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
 
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -86,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
             });
             builder.setMessage(R.string.dialog_message);
 
-            AlertDialog dialog = builder.create();
-        }*/
+            AlertDialog dialog = builder.create();*/
+        }
     }
 }
