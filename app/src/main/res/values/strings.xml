@@ -23,4 +23,5 @@
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
     <string name="dialog_message">Thank you for registering go to login screen?</string>
+    <string name="text_validate">Please Fill in all Fields*</string>
 </resources>

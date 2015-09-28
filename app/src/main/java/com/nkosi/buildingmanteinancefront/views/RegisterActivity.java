@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nkosi.buildingmanteinancefront.R;
@@ -63,18 +64,19 @@ public class RegisterActivity extends AppCompatActivity {
         String userName = editUserName.getText().toString();
 
 
-        if (firstName == "" || lastName == "" || email == "" || password == "" || userName == ""){
+        if (firstName.length() < 1 || lastName.length() < 1 || email.length() < 1 || password.length() < 1 || userName.length() < 1){
+            TextView textview = (TextView) findViewById(R.id.text_validate);
 
-            Toast.makeText(this, "You did not enter a username", Toast.LENGTH_SHORT).show();
-            /*Context context = getApplicationContext();
-            CharSequence text = "Please Complete All fields";
+            textview.setVisibility(View.VISIBLE);
+            Context context = getApplicationContext();
+            CharSequence text = "Please Fill in all the fields";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
-            toast.show();*/
+            toast.show();
         }
         else{
-            /*AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
 
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -88,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
             });
             builder.setMessage(R.string.dialog_message);
 
-            AlertDialog dialog = builder.create();*/
+            AlertDialog dialog = builder.create()
         }
     }
 }
