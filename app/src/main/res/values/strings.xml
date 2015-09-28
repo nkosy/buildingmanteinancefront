@@ -13,4 +13,14 @@
     <string name="button_buildings">Buildings</string>
     <string name="button_managers">Managers</string>
     <string name="button_exit">Exit</string>
+    <string name="title_activity_register">Register</string>
+    <string name="edit_first_name">First Name</string>
+    <string name="edit_last_name">Last Name</string>
+    <string name="edit_email">Email</string>
+    <string name="edit_confirm_password">Confirm Password</string>
+    <string name="button_register">Register</string>
+    <string name="button_cancel_register">Cancel</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+    <string name="dialog_message">Thank you for registering go to login screen?</string>
 </resources>

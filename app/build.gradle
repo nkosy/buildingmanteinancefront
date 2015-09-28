@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'BuildingManagerKeystore'
+            keyPassword 'zoe#1856'
+            storeFile file('/home/nkosi/keystores/keystore.release.jks')
+            storePassword 'zoe#1856'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.0"
-
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -16,7 +23,6 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
-
     defaultConfig {
         applicationId "com.nkosi.buildingmanteinancefront"
         minSdkVersion 11
@@ -25,16 +31,20 @@ android {
         versionName "1.0"
     }
     buildTypes {
+        release{
+            zipAlignEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.0'
-    compile'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.3.1'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
 }
