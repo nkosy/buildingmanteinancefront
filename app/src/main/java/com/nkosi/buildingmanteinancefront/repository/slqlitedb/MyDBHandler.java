@@ -2,10 +2,13 @@ package com.nkosi.buildingmanteinancefront.repository.slqlitedb;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nkosi.buildingmanteinancefront.repository.slqlitedb.model.User;
+
+import java.sql.SQLDataException;
 
 /**
  * Created by nkosi on 2015/09/28.
@@ -68,7 +71,56 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public void deleteUser(String user_name){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_USER_NAME + "=\"" + user_name + "\";" );
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_USER_NAME + "=\"" + user_name + "\";");
     }
 
+    public String findUserName(String UserName){
+        SQLiteDatabase db = getReadableDatabase();
+        String dbString = "";
+        String query = "SELECT * FROM " + TABLE_NAME +
+                " WHERE " + COLUMN_NAME_USER_NAME + " = \" " + UserName.trim() + "\";";
+
+        try{
+            Cursor mycursor = db.rawQuery(query, null);
+            mycursor.moveToFirst();
+
+            while(!mycursor.isAfterLast()){
+                if(mycursor.getString(mycursor.getColumnIndex(COLUMN_NAME_USER_NAME))!= null){
+                    dbString += mycursor.getString(mycursor.getColumnIndex(COLUMN_NAME_USER_NAME));
+                }
+            }
+
+        }
+        catch(Exception ex){
+            dbString = ex.getMessage();
+        }
+
+        db.close();
+        return dbString;
+    }
+
+    public String displayUsers(){
+        SQLiteDatabase db = getReadableDatabase();
+        String dbString = "";
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_USER_ID +
+                " >1;";
+
+        try{
+            Cursor mycursor = db.rawQuery(query, null);
+            mycursor.moveToFirst();
+
+            while(!mycursor.isAfterLast()){
+                if(mycursor.getString(mycursor.getColumnIndex(COLUMN_NAME_USER_NAME))!= null){
+                    dbString += mycursor.getString(mycursor.getColumnIndex(COLUMN_NAME_USER_NAME));
+                    dbString += "\n";
+                }
+            }
+        }
+        catch(Exception ex){
+            dbString = ex.getMessage();
+        }
+
+        db.close();
+        return dbString;
+    }
 }

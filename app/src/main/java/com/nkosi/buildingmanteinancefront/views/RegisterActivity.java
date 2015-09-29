@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nkosi.buildingmanteinancefront.R;
+import com.nkosi.buildingmanteinancefront.repository.slqlitedb.MyDBHandler;
+import com.nkosi.buildingmanteinancefront.repository.slqlitedb.model.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -56,6 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
         EditText editEmail = (EditText) findViewById(R.id.edit_email);
         EditText editPassword = (EditText) findViewById(R.id.edit_password);
         EditText editUserName = (EditText) findViewById(R.id.edit_user_username);
+        MyDBHandler handler = new MyDBHandler(this, null, null, 1);
+        TextView textview = (TextView) findViewById(R.id.text_validate);
 
         String firstName = editFirstName.getText().toString();
         String lastName = editLastName.getText().toString();
@@ -65,8 +69,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         if (firstName.length() < 1 || lastName.length() < 1 || email.length() < 1 || password.length() < 1 || userName.length() < 1){
-            TextView textview = (TextView) findViewById(R.id.text_validate);
-
             textview.setVisibility(View.VISIBLE);
             Context context = getApplicationContext();
             CharSequence text = "Please Fill in all the fields";
@@ -75,22 +77,40 @@ public class RegisterActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
+        else if(handler.findUserName(userName).length() > 1){
+            textview.setText("Ooops! user name " + userName + " Is already taken");
+            textview.setVisibility(View.VISIBLE);
+
+            String result = handler.findUserName(userName);
+            Context context = getApplicationContext();
+            CharSequence text = result;
+            int duration = Toast.LENGTH_LONG;
+            textview.setText(result);
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
         else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+           /* String dbRes = handler.displayUsers();
+            User newUser = new User();
+            newUser.setFirst_name(firstName);
+            newUser.setLast_name(lastName);
+            newUser.setEmail(email);
+            newUser.setPassword(password);
 
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User clicked OK button
-                }
-            });
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User cancelled the dialog
-                }
-            });
-            builder.setMessage(R.string.dialog_message);
+            handler.addNewUser(newUser);
+            Context context = getApplicationContext();
+            CharSequence text = "Registered!";
+            int duration = Toast.LENGTH_SHORT;
 
-            AlertDialog dialog = builder.create()
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+            textview.setVisibility(View.VISIBLE);
+            textview.setText(dbRes);
+*/
+           /* Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);*/
         }
     }
 }
