@@ -17,6 +17,8 @@ import com.nkosi.buildingmanteinancefront.R;
 import com.nkosi.buildingmanteinancefront.repository.slqlitedb.MyDBHandler;
 import com.nkosi.buildingmanteinancefront.repository.slqlitedb.model.User;
 
+import java.util.List;
+
 public class RegisterActivity extends AppCompatActivity {
 
     @Override
@@ -58,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         EditText editEmail = (EditText) findViewById(R.id.edit_email);
         EditText editPassword = (EditText) findViewById(R.id.edit_password);
         EditText editUserName = (EditText) findViewById(R.id.edit_user_username);
+        EditText editConfirmPassword = (EditText) findViewById(R.id.edit_confirm_password);
         MyDBHandler handler = new MyDBHandler(this, null, null, 1);
         TextView textview = (TextView) findViewById(R.id.text_validate);
 
@@ -66,9 +69,10 @@ public class RegisterActivity extends AppCompatActivity {
         String email =  editEmail.getText().toString();
         String password = editPassword.getText().toString();
         String userName = editUserName.getText().toString();
+        String confirm_password = editConfirmPassword.getText().toString();
 
-
-        if (firstName.length() < 1 || lastName.length() < 1 || email.length() < 1 || password.length() < 1 || userName.length() < 1){
+        if (firstName.length() < 1 || lastName.length() < 1 || email.length() < 1
+                || password.length() < 1 || userName.length() < 1 || confirm_password.length() < 1){
             textview.setVisibility(View.VISIBLE);
             Context context = getApplicationContext();
             CharSequence text = "Please Fill in all the fields";
@@ -77,21 +81,29 @@ public class RegisterActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
-        else if(handler.findUserName(userName).length() > 1){
+        else if(handler.findUserName(userName)){
             textview.setText("Ooops! user name " + userName + " Is already taken");
             textview.setVisibility(View.VISIBLE);
 
-            String result = handler.findUserName(userName);
             Context context = getApplicationContext();
-            CharSequence text = result;
+            CharSequence text = userName;
             int duration = Toast.LENGTH_LONG;
-            textview.setText(result);
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
         else{
-           /* String dbRes = handler.displayUsers();
+            List<User> users = handler.displayUsers();
+
+            String dbUsers = users.toString();
+
+            for(User user: users){
+                dbUsers += user.getFirst_name() + "\n";
+                System.out.println(dbUsers);
+            }
+
+            textview.setVisibility(View.VISIBLE);
+            textview.setText(dbUsers);
             User newUser = new User();
             newUser.setFirst_name(firstName);
             newUser.setLast_name(lastName);
@@ -105,12 +117,26 @@ public class RegisterActivity extends AppCompatActivity {
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
+            BlankFileds();
 
-            textview.setVisibility(View.VISIBLE);
-            textview.setText(dbRes);
-*/
-           /* Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);*/
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            startActivity(intent);
         }
+    }
+
+    public void BlankFileds(){
+        EditText editFirstName = (EditText) findViewById(R.id.edit_first_name);
+        EditText editLastName = (EditText) findViewById(R.id.edit_last_name);
+        EditText editEmail = (EditText) findViewById(R.id.edit_email);
+        EditText editPassword = (EditText) findViewById(R.id.edit_password);
+        EditText editUserName = (EditText) findViewById(R.id.edit_user_username);
+        EditText editConfirmPassword = (EditText) findViewById(R.id.edit_confirm_password);
+
+        editFirstName.setText("");
+        editLastName.setText("");
+        editEmail.setText("");
+        editPassword.setText("");
+        editUserName.setText("");
+        editConfirmPassword.setText("");
     }
 }

@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.nkosi.buildingmanteinancefront.repository.slqlitedb.model.User;
 
 import java.sql.SQLDataException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nkosi on 2015/09/28.
@@ -74,53 +76,51 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_USER_NAME + "=\"" + user_name + "\";");
     }
 
-    public String findUserName(String UserName){
+    public Boolean findUserName(String userName){
         SQLiteDatabase db = getReadableDatabase();
         String dbString = "";
-        String query = "SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COLUMN_NAME_USER_NAME + " = \" " + UserName.trim() + "\";";
+        Boolean found = false;
 
-        try{
-            Cursor mycursor = db.rawQuery(query, null);
-            mycursor.moveToFirst();
+        List<User> users = new ArrayList<>();
+        users = displayUsers();
 
-            while(!mycursor.isAfterLast()){
-                if(mycursor.getString(mycursor.getColumnIndex(COLUMN_NAME_USER_NAME))!= null){
-                    dbString += mycursor.getString(mycursor.getColumnIndex(COLUMN_NAME_USER_NAME));
-                }
+        for(User usr: users){
+            if(usr.getUser_name() == userName){
+                found = true;
             }
-
-        }
-        catch(Exception ex){
-            dbString = ex.getMessage();
         }
 
         db.close();
-        return dbString;
+        return found;
     }
 
-    public String displayUsers(){
-        SQLiteDatabase db = getReadableDatabase();
-        String dbString = "";
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_USER_ID +
-                " >1;";
+    public List<User> displayUsers(){
+            List<User> users = new ArrayList<User>();
+            SQLiteDatabase db = getReadableDatabase();
+            String[] allColumns = {COLUMN_NAME_USER_NAME,
+                COLUMN_NAME_First_Name, COLUMN_NAME_LAST_NAME};
 
-        try{
-            Cursor mycursor = db.rawQuery(query, null);
-            mycursor.moveToFirst();
+                Cursor cursor = db.query(TABLE_NAME,
+                    allColumns, null, null, null, null, null);
 
-            while(!mycursor.isAfterLast()){
-                if(mycursor.getString(mycursor.getColumnIndex(COLUMN_NAME_USER_NAME))!= null){
-                    dbString += mycursor.getString(mycursor.getColumnIndex(COLUMN_NAME_USER_NAME));
-                    dbString += "\n";
-                }
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                User comment = cursorToUser(cursor);
+                users.add(comment);
+                cursor.moveToNext();
             }
-        }
-        catch(Exception ex){
-            dbString = ex.getMessage();
-        }
+            // make sure to close the cursor
 
-        db.close();
-        return dbString;
+            cursor.close();
+            db.close();
+            return users;
+
+    }
+    private User cursorToUser(Cursor cursor) {
+        User user = new User();
+        user.setUser_name(cursor.getString(0));
+        user.setFirst_name(cursor.getString(1));
+        user.setLast_name(cursor.getString(1));
+        return user;
     }
 }
