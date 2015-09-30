@@ -23,7 +23,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_NAME_USER_ID = "user_id";
     public static final String COLUMN_NAME_USER_NAME = "user_name";
     public static final String COLUMN_NAME_PASSWORD = "password";
-    public static final String COLUMN_NAME_First_Name = "first_name";
+    public static final String COLUMN_NAME_FIRST_NAME = "first_name";
     public static final String COLUMN_NAME_LAST_NAME = "last_name";
     public static final String COLUMN_NAME_EMAIL = "email";
     private static final String TEXT_TYPE = " TEXT";
@@ -44,7 +44,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                         COLUMN_NAME_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         COLUMN_NAME_USER_NAME + TEXT_TYPE + COMMA_SEP +
                         COLUMN_NAME_PASSWORD + TEXT_TYPE + COMMA_SEP +
-                        COLUMN_NAME_First_Name + TEXT_TYPE + COMMA_SEP +
+                        COLUMN_NAME_FIRST_NAME + TEXT_TYPE + COMMA_SEP +
                         COLUMN_NAME_LAST_NAME + TEXT_TYPE + COMMA_SEP +
                         COLUMN_NAME_EMAIL + TEXT_TYPE +
                         " )";
@@ -62,7 +62,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_USER_NAME, user.getUser_name());
         values.put(COLUMN_NAME_PASSWORD, user.getPassword());
-        values.put(COLUMN_NAME_First_Name, user.getFirst_name());
+        values.put(COLUMN_NAME_FIRST_NAME, user.getFirst_name());
         values.put(COLUMN_NAME_LAST_NAME, user.getLast_name());
         values.put(COLUMN_NAME_EMAIL, user.getEmail());
 
@@ -77,43 +77,50 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     public Boolean findUserName(String userName){
-        SQLiteDatabase db = getReadableDatabase();
-        String dbString = "";
         Boolean found = false;
 
-        List<User> users = new ArrayList<>();
-        users = displayUsers();
+        SQLiteDatabase db = getReadableDatabase();
+        String[] allColumns = {COLUMN_NAME_USER_NAME,
+                COLUMN_NAME_FIRST_NAME, COLUMN_NAME_LAST_NAME};
 
-        for(User usr: users){
-            if(usr.getUser_name() == userName){
+        Cursor cursor = db.query(TABLE_NAME,
+                allColumns, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            User user = cursorToUser(cursor);
+            if (user.getUser_name() == userName)
                 found = true;
-            }
+            cursor.moveToNext();
         }
+        // make sure to close the cursor
 
+        cursor.close();
         db.close();
         return found;
     }
 
-    public List<User> displayUsers(){
+    public String displayUsers(){
             List<User> users = new ArrayList<User>();
             SQLiteDatabase db = getReadableDatabase();
+            String returnString = "";
             String[] allColumns = {COLUMN_NAME_USER_NAME,
-                COLUMN_NAME_First_Name, COLUMN_NAME_LAST_NAME};
+                COLUMN_NAME_FIRST_NAME, COLUMN_NAME_LAST_NAME};
 
                 Cursor cursor = db.query(TABLE_NAME,
                     allColumns, null, null, null, null, null);
 
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                User comment = cursorToUser(cursor);
-                users.add(comment);
+                User user = cursorToUser(cursor);
                 cursor.moveToNext();
+                returnString += user.getUser_name() + "\n";
             }
             // make sure to close the cursor
 
             cursor.close();
             db.close();
-            return users;
+            return returnString;
 
     }
     private User cursorToUser(Cursor cursor) {

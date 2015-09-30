@@ -4,7 +4,7 @@ package com.nkosi.buildingmanteinancefront.repository.slqlitedb.model;
  * Created by nkosi on 2015/09/28.
  */
 public class User {
-    private int user_id;
+    private long user_id;
     private String user_name;
     private String password;
     private String first_name;
@@ -14,8 +14,12 @@ public class User {
     public User() {
     }
 
-    public int getUser_id() {
+    public long getUser_id() {
         return user_id;
+    }
+
+    public void setUser_id(long user_id) {
+        this.user_id = user_id;
     }
 
     public String getUser_name() {
@@ -36,10 +40,6 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
     }
 
     public void setUser_name(String user_name) {

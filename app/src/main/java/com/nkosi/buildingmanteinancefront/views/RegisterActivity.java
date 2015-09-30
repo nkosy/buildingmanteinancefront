@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import com.nkosi.buildingmanteinancefront.R;
 import com.nkosi.buildingmanteinancefront.repository.slqlitedb.MyDBHandler;
+import com.nkosi.buildingmanteinancefront.repository.slqlitedb.UsersDataSource;
 import com.nkosi.buildingmanteinancefront.repository.slqlitedb.model.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -55,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(View view){
+
         EditText editFirstName = (EditText) findViewById(R.id.edit_first_name);
         EditText editLastName = (EditText) findViewById(R.id.edit_last_name);
         EditText editEmail = (EditText) findViewById(R.id.edit_email);
@@ -70,6 +73,26 @@ public class RegisterActivity extends AppCompatActivity {
         String password = editPassword.getText().toString();
         String userName = editUserName.getText().toString();
         String confirm_password = editConfirmPassword.getText().toString();
+        String availableUserName = "";
+
+        UsersDataSource datasource;
+        datasource = new UsersDataSource(this);
+
+        //Open DataSource
+        try{
+            datasource.open();}catch(SQLException ex){
+            textview.setVisibility(View.VISIBLE);
+            textview.setText("Failed to open Data source " + ex.getMessage());
+        }
+
+        try{
+            availableUserName = datasource.findUser(userName);
+        }catch(Exception ex){
+            availableUserName = ex.getMessage();
+        }
+
+        //Close after Checking for userName availability
+        datasource.close();
 
         if (firstName.length() < 1 || lastName.length() < 1 || email.length() < 1
                 || password.length() < 1 || userName.length() < 1 || confirm_password.length() < 1){
@@ -81,9 +104,9 @@ public class RegisterActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
-        else if(handler.findUserName(userName)){
-            textview.setText("Ooops! user name " + userName + " Is already taken");
-            textview.setVisibility(View.VISIBLE);
+        else if(availableUserName != null){
+            textview.setText("Ooops! user name " + availableUserName + " Is already taken");
+            //textview.setVisibility(View.VISIBLE);
 
             Context context = getApplicationContext();
             CharSequence text = userName;
@@ -93,24 +116,25 @@ public class RegisterActivity extends AppCompatActivity {
             toast.show();
         }
         else{
-            List<User> users = handler.displayUsers();
 
-            String dbUsers = users.toString();
-
-            for(User user: users){
-                dbUsers += user.getFirst_name() + "\n";
-                System.out.println(dbUsers);
-            }
-
-            textview.setVisibility(View.VISIBLE);
-            textview.setText(dbUsers);
             User newUser = new User();
             newUser.setFirst_name(firstName);
             newUser.setLast_name(lastName);
             newUser.setEmail(email);
+            newUser.setUser_name(userName);
             newUser.setPassword(password);
 
-            handler.addNewUser(newUser);
+            //Open DataSource
+            try{
+                datasource.open();}catch(SQLException ex){
+                textview.setVisibility(View.VISIBLE);
+                textview.setText("Failed to open Data source " + ex.getMessage());
+            }
+
+            String creation = datasource.createUser(newUser);
+            datasource.close();
+            textview.setText(creation);
+            textview.setVisibility(View.VISIBLE);
             Context context = getApplicationContext();
             CharSequence text = "Registered!";
             int duration = Toast.LENGTH_SHORT;
@@ -119,9 +143,10 @@ public class RegisterActivity extends AppCompatActivity {
             toast.show();
             BlankFileds();
 
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            startActivity(intent);
+            /*Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);*/
         }
+
     }
 
     public void BlankFileds(){

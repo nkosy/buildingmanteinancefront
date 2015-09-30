@@ -16,7 +16,7 @@ import java.util.List;
  * Created by hashcode on 2015/09/01.
  */
 public class RestBuildingManagerAPI implements RestAPI<BuildingManager,Long>{
-    final String BASE_URL="http//localhost:8080/api/";
+    final String BASE_URL="buildingmanteinance-nkosi.rhcloud.com/api/";
 
     final HttpHeaders requestHeaders = RestMethods.getHeaders();
     final RestTemplate restTemplate = RestMethods.getRestTemplate();
