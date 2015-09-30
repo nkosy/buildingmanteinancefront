@@ -1,16 +1,23 @@
 package com.nkosi.buildingmanteinancefront.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nkosi.buildingmanteinancefront.R;
-import com.nkosi.buildingmanteinancefront.repository.slqlitedb.FeedReaderContract;
+import com.nkosi.buildingmanteinancefront.repository.slqlitedb.UsersDataSource;
+import com.nkosi.buildingmanteinancefront.repository.slqlitedb.model.User;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -55,7 +62,61 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void logIn(View view){
-        Intent intent = new Intent(this, DisplayMenu.class);
-        startActivity(intent);
+        String errormsg = "";
+        UsersDataSource datasource;
+        datasource = new UsersDataSource(this);
+
+        //Open DataSource
+        try{
+            datasource.open();}catch(SQLException ex){
+            errormsg += "Failed to open Data source " + ex.getMessage() + "\n";
+        }
+
+        List<User> users = new ArrayList<User>();
+        users = datasource.getAllUsers();
+        datasource.close();
+
+        EditText editPassword = (EditText) findViewById(R.id.edit_login_password);
+        EditText editUserName = (EditText) findViewById(R.id.edit_login_username);
+
+        String password = editPassword.getText().toString();
+        String userName = editUserName.getText().toString();
+        String inDB = "";
+
+
+        Boolean authenticate = false;
+        for(User theUser: users){
+            if(theUser.getUser_name().trim().length() == userName.trim().length()
+                    && theUser.getPassword().trim().length() == password.trim().length()
+                    && theUser.getUser_name().trim().contains(userName.trim())
+                    && theUser.getPassword().trim().contains(password)){
+                authenticate = true;
+            }
+
+            inDB += theUser.getUser_name() + " :" + theUser.getPassword() + "\n";
+        }
+
+        if (password.length() < 1 || userName.length() < 1){
+            Context context = getApplicationContext();
+            CharSequence text = "Please Fill in all the fields";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+        else if(!authenticate){
+            TextView textView = (TextView) findViewById(R.id.text_login_validate);
+            textView.setText(inDB);
+            Context context = getApplicationContext();
+            CharSequence text = "Incorrect username or password ";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+        else{
+            Intent intent = new Intent(this, DisplayMenu.class);
+            startActivity(intent);
+        }
     }
 }

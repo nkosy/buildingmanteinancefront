@@ -1,9 +1,7 @@
 package com.nkosi.buildingmanteinancefront.views;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +17,6 @@ import com.nkosi.buildingmanteinancefront.repository.slqlitedb.UsersDataSource;
 import com.nkosi.buildingmanteinancefront.repository.slqlitedb.model.User;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -105,11 +102,11 @@ public class RegisterActivity extends AppCompatActivity {
             toast.show();
         }
         else if(availableUserName != null){
-            textview.setText("Ooops! user name " + availableUserName + " Is already taken");
-            //textview.setVisibility(View.VISIBLE);
+            textview.setText("Ooops! user name " + userName + " Is already taken");
+            textview.setVisibility(View.VISIBLE);
 
             Context context = getApplicationContext();
-            CharSequence text = userName;
+            CharSequence text = "User Name " + userName + " Already Taken";
             int duration = Toast.LENGTH_LONG;
 
             Toast toast = Toast.makeText(context, text, duration);
@@ -132,6 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             String creation = datasource.createUser(newUser);
+            //close dataSource
             datasource.close();
             textview.setText(creation);
             textview.setVisibility(View.VISIBLE);
@@ -143,8 +141,8 @@ public class RegisterActivity extends AppCompatActivity {
             toast.show();
             BlankFileds();
 
-            /*Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);*/
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
 
     }

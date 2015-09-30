@@ -77,18 +77,38 @@ public class UsersDataSource {
     public String findUser(String userName){
 
         String result = null;
+
         String[] args={userName};
         Cursor cursor = database.rawQuery("select " + MySQLiteHelper.COLUMN_NAME_USER_NAME +
                 " from " + MySQLiteHelper.TABLE_NAME + " where " + MySQLiteHelper.COLUMN_NAME_USER_NAME +
                 " = ?", args);
+
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             User user = cursorToUser(cursor);
-            if(cursor.getString(1).trim() == userName.trim())
-                result =  cursor.getString(1);
+            if(user.getUser_name().trim() == userName.trim())
+                result =  user.getUser_name();
             cursor.moveToNext();
+            result +=  user.getUser_name() + "\n";
         }
 
         return result;
+    }
+
+    public List<User> getAllUsers() {
+        List<User> comments = new ArrayList<User>();
+
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_NAME,
+                allColumns, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            User user = cursorToUser(cursor);
+            comments.add(user);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return comments;
     }
 }

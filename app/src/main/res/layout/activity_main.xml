@@ -20,12 +20,22 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.47" />
 
+        <TextView
+            android:id="@+id/text_login_validate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="#FF0000"
+            android:visibility="visible"
+            android:text="@string/text_validate"/>
+
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="#372c24"
             android:text="@string/edit_user_name"/>
 
-        <EditText android:id="@+id/edit_username"
+        <EditText android:id="@+id/edit_login_username"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
@@ -37,13 +47,13 @@
             android:layout_height="wrap_content"
             android:textColor="#372c24" />
 
-        <EditText android:id="@+id/edit_password"
+        <EditText android:id="@+id/edit_login_password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
             android:singleLine="true"
             android:password="true"
-            android:text="@string/edit_password"/>
+            android:text=""/>
 
         <Button android:id="@+id/btnLogin"
             android:layout_width="fill_parent"
