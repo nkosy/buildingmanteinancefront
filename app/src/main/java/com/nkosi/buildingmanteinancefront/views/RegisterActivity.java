@@ -112,6 +112,18 @@ public class RegisterActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
+        else  if(password.trim().length() != confirm_password.trim().length()
+                && !confirm_password.trim().contains(password.trim())) {
+            textview.setText("Confirmation of password does not match with the password*");
+            textview.setVisibility(View.VISIBLE);
+
+            Context context = getApplicationContext();
+            CharSequence text = "Confirmation of password does not match with the password";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
         else{
 
             User newUser = new User();

@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nkosi.buildingmanteinancefront.R;
+import com.nkosi.buildingmanteinancefront.repository.RestAPI;
+import com.nkosi.buildingmanteinancefront.repository.rest.RestHomePageAPI;
 import com.nkosi.buildingmanteinancefront.repository.slqlitedb.UsersDataSource;
 import com.nkosi.buildingmanteinancefront.repository.slqlitedb.model.User;
 
@@ -37,6 +39,18 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        RestAPI rest = new RestHomePageAPI();
+        TextView textResults = (TextView) findViewById(R.id.text_login_validate);
+        String result = "";
+        textResults.setVisibility(View.VISIBLE);
+        textResults.setText(result);
+
+        try{
+            result = rest.home();
+        }catch(Exception ex){
+            result = ex.getMessage();
+        }
     }
 
     @Override
@@ -92,8 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                     && theUser.getPassword().trim().contains(password)){
                 authenticate = true;
             }
-
-            inDB += theUser.getUser_name() + " :" + theUser.getPassword() + "\n";
         }
 
         if (password.length() < 1 || userName.length() < 1){
@@ -105,8 +117,6 @@ public class LoginActivity extends AppCompatActivity {
             toast.show();
         }
         else if(!authenticate){
-            TextView textView = (TextView) findViewById(R.id.text_login_validate);
-            textView.setText(inDB);
             Context context = getApplicationContext();
             CharSequence text = "Incorrect username or password ";
             int duration = Toast.LENGTH_LONG;

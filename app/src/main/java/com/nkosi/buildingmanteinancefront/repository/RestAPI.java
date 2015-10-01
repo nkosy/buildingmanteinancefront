@@ -15,4 +15,6 @@ public interface RestAPI<S, ID> {
     String delete(S entity);
 
     List<S> getAll();
+
+    String home();
 }

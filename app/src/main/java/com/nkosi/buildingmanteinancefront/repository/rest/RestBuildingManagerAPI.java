@@ -32,7 +32,7 @@ public class RestBuildingManagerAPI implements RestAPI<BuildingManager,Long>{
 
     @Override
     public String post(BuildingManager entity) {
-        final String url = BASE_URL+"manager/create";
+        final String url = BASE_URL+"buildingmanager/create";
         HttpEntity<BuildingManager> requestEntity = new HttpEntity<BuildingManager>(entity, requestHeaders);
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
         String result = responseEntity.getBody();
@@ -68,5 +68,10 @@ public class RestBuildingManagerAPI implements RestAPI<BuildingManager,Long>{
             managers.add(subject);
         }
         return managers;
+    }
+
+    @Override
+    public String home() {
+        return null;
     }
 }
