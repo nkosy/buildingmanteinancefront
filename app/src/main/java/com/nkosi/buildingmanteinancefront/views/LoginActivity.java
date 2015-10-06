@@ -42,15 +42,15 @@ public class LoginActivity extends AppCompatActivity {
 
         RestAPI rest = new RestHomePageAPI();
         TextView textResults = (TextView) findViewById(R.id.text_login_validate);
-        String result = "";
-        textResults.setVisibility(View.VISIBLE);
-        textResults.setText(result);
-
+        String result = "did not execute";
         try{
             result = rest.home();
         }catch(Exception ex){
             result = ex.getMessage();
         }
+        textResults.setVisibility(View.VISIBLE);
+        textResults.setText(result);
+
     }
 
     @Override

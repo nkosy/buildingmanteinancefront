@@ -21,4 +21,10 @@ public class RestMethods {
         requestHeaders.setContentType(new MediaType("application", "json"));
         return requestHeaders;
     }
+
+    public static HttpHeaders getWelcomHeaders(){
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(new MediaType("application", "String"));
+        return requestHeaders;
+    }
 }

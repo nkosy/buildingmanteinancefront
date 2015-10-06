@@ -16,9 +16,9 @@ import java.util.List;
  */
 public class RestHomePageAPI implements RestAPI<BuildingManager,Long> {
 
-    final String BASE_URL="buildingmanteinance-nkosi.rhcloud.com/api/";
+    final String BASE_URL="http://buildingmanteinance-nkosi.rhcloud.com/api/";
 
-    final HttpHeaders requestHeaders = RestMethods.getHeaders();
+    final HttpHeaders requestHeaders = RestMethods.getWelcomHeaders();
     final RestTemplate restTemplate = RestMethods.getRestTemplate();
     @Override
     public BuildingManager get(Long aLong) {
